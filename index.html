@@ -1,0 +1,270 @@
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>TaffyTrello</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <script src="js/taffy-min.js"></script>
+
+
+
+    <!-- Custom CSS -->
+    <link href="css/simple-sidebar.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script>
+        var ncreNo = 1;
+
+        var order = TAFFY([{
+            orderNumber: ncreNo++,
+            quantity: "2",
+            location: "MG Road",
+            status: "new"
+        }, {
+            orderNumber: ncreNo++,
+            quantity: "2",
+            location: "Sector 17",
+            status: "processing"
+        }, {
+            orderNumber: ncreNo++,
+            quantity: "2",
+            location: "MG Road",
+            status: "new"
+        }]);
+
+        var newOrder = (order({
+            status: "new"
+        }).select("orderNumber"));
+        var processingOrder = (order({
+            status: "processing"
+        }).select("orderNumber"));
+        var oldOrder = (order({
+            status: "delivered"
+        }).select("orderNumber"));
+    </script>
+</head>
+
+<body ng-app="dragAndDrop" ng-controller="dragAndDropController">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">TaffyTrello</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li> <a href="#menu-toggle" id="menu-toggle">Open Notification</a>
+                    </li>
+                </ul>
+            </div>
+            <!--/.nav-collapse -->
+        </div>
+    </nav>
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <div class="notification"> Notifications</div>
+            <ul class="sidebar-nav">
+
+
+            </ul>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class=" panel panel-default">
+                            <div class="panel-heading">New Order <a class='open-GSCCModal' style="float:right;" data-id="0" data-toggle='modal' data-target='#GSCCModal'>New</a>
+                            </div>
+                            <div droppable class=" panel-body" id="new">
+
+                                <script>
+                                    for (i = 0; i < newOrder.length; i++) {
+
+                                        document.write("<div draggable id=" + newOrder[i] + " data-id=" + newOrder[i] + " class='open-GSCCModal panel-content' data-toggle='modal' data-target='#GSCCModal'><p>" + newOrder[i] + "</p></div>");
+                                    }
+                                </script>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class=" panel panel-default">
+                            <div class="panel-heading">Processing</div>
+                            <div droppable class=" panel-body" id="processing">
+                                <script>
+                                    for (i = 0; i < processingOrder.length; i++) {
+
+                                        document.write("<div draggable id=" + processingOrder[i] + " data-id=" + processingOrder[i] + " class='open-GSCCModal panel-content' data-toggle='modal' data-target='#GSCCModal'><p >" + processingOrder[i] + "</p></div>");
+                                    }
+                                </script>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class=" panel panel-default">
+                            <div class="panel-heading">Delivered</div>
+                            <div droppable class=" panel-body" id="delivered">
+                                <script>
+                                    for (i = 0; i < oldOrder.length; i++) {
+
+                                        document.write("<div draggable id=" + oldOrder[i] + " data-id=" + oldOrder[i] + " class='open-GSCCModal panel-content' data-toggle='modal' data-target='#GSCCModal'><p>" + oldOrder[i] + "</p></div>");
+                                    }
+                                </script>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- /#page-content-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery-ui.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+        $("#menu-toggle").click(function (e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js"></script>
+    <script src="js/angular-dragdrop.min.js"></script>
+
+    <div id="GSCCModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times; </button>
+                    <h4 class="modal-title" id="myModalLabel">Order Detail</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>Order Number</p>
+                        </div>
+                        <div class="col-md-5">
+                            <p name="orderNumber" id="orderNumber"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-6">
+                            <p>Quantity</p>
+                        </div>
+                        <div class="col-md-5">
+                            <input type="number" name="quantity" id="quantity" value="" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p>Location</p>
+                        </div>
+                        <div class="col-md-5">
+                            <select class="form-control" name="location" id="location">
+                <option value="MG Road">MG Road</option>
+               <option value="Udyog Vihar">Udyog Vihar</option>
+                                <option value="IFFCO Chowk">IFFCO Chowk</option>
+                                <option value="Sector 17">Sector 17</option>
+            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" id="submit_btn" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(document).on("click", ".open-GSCCModal", function () {
+
+            var myBookId = $(this).data('id');
+            if (parseInt(myBookId) != 0) {
+                console.log(order().get());
+                $(".modal-body #orderNumber").text(myBookId);
+                $(".modal-body #quantity").val(order({
+                    orderNumber: myBookId
+                }).select("quantity"));
+                $(".modal-body #location").val(order({
+                    orderNumber: myBookId
+                }).select("location"));
+                $('#GSCCModal').modal('show');
+            } else {
+                $(".modal-body #orderNumber").text(ncreNo++);
+                $(".modal-body #quantity").val("");
+                $(".modal-body #location").val("");
+            }
+        });
+        $(document).on("click", "#submit_btn", function (event) {
+            var myBookId = $("#orderNumber").text();
+
+            if (order({
+                    orderNumber: parseInt(myBookId)
+                }).select("quantity") != "") {
+                order({
+                    orderNumber: parseInt(myBookId)
+                }).update({
+                    quantity: $("#quantity").val(),
+                    location: $("#location").val()
+                });
+            } else {
+                order.insert({
+                    orderNumber: parseInt(myBookId),
+                    quantity: $("#quantity").val(),
+                    location: $("#location").val(),
+                    status: "new"
+                });
+                $("<div draggable id=" + parseInt(myBookId) + " data-id=" + parseInt(myBookId) + " class='open-GSCCModal panel-content' data-toggle='modal' data-target='#GSCCModal'><p>" + parseInt(myBookId) + "</p></div>").appendTo("#new");
+                $(".sidebar-nav").prepend("<li> Order " + parseInt(myBookId) + " Recieved, deliver it to " + order({
+                    orderNumber: parseInt(myBookId)
+                }).select('location') + "</li>");
+                
+                angular.bootstrap(document, ['dragAndDrop']);
+            }
+            $('#GSCCModal').modal('hide');
+
+
+        });
+    </script>
+</body>
+
+</html>
